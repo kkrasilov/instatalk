@@ -12,6 +12,7 @@ jQuery(document).on 'turbolinks:load', ->
         event.target.value = ""
       event.preventDefault()
 
+
 createRoomChannel = (roomId) ->
   App.room = App.cable.subscriptions.create {channel: "RoomChannel", roomId: roomId},
     connected: ->
@@ -26,6 +27,7 @@ createRoomChannel = (roomId) ->
       # Called when there's incoming data on the websocket for this channel
       console.log('Received message: ' + data['message'])
       $('#messages').append data['message']
+      $('#messages').scrollTop($('#messages').prop('scrollHeight'))
 
     speak: (message) ->
       @perform 'speak', message: message
