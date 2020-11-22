@@ -3,24 +3,30 @@ class AppearanceChannel < ApplicationCable::Channel
     logger.info "Subscribed to AppearanceChannel"
     stream_from "appearance_channel"
 
-    current_user.online = true
-    current_user.save!
+    current_user.update!(online: true)
 
-    broadcast_appearance
+
+    html = ApplicationController.render(partial: "users/user", locals: { user: current_user} )
+
+    ActionCable.server.broadcast "appearance_channel", users: current_user, html: html
   end
 
   def unsubscribed
-    logger.info "Unsubscribed to AppearanceChannel"
+    if count_unique_connections.zero?
+      logger.info "Unsubscribed to AppearanceChannel"
 
-    current_user.online = false
-    current_user.save!
+      current_user.update!(online: false)
 
-    broadcast_appearance
+
+      ActionCable.server.broadcast "appearance_channel", users: current_user
+    end
   end
 
   private
 
-  def broadcast_appearance
-    ActionCable.server.broadcast "appearance_channel", users: User.online.map(&:nickname)
-  end
+ def count_unique_connections
+    ActionCable.server.connections.count do |connection|
+      connection.current_user.id == current_user.id
+    end
+ end
 end

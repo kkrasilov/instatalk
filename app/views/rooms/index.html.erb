@@ -17,9 +17,7 @@
     <h4>online users:</h4>
 
     <ul id="online">
-      <% @users.online.each do |user| %>
-      <li><%= user.nickname %></li>
-      <% end %>
+      <%= render partial: "users/user", collection: User.online %>
     </ul>
   </div>
 </div>

@@ -6,4 +6,10 @@ App.appearance = App.cable.subscriptions.create "AppearanceChannel",
     # Called when the subscription has been terminated by the server
 
   received: (data) ->
-    $('#online').html data['users'].map((user) -> "<li>#{user}</li>").join("\n")
+    current_user = data.users
+    element_user = $("#online").find("[data-id=#{current_user.id}]")
+
+    if current_user.online && element_user.length == 0
+      $("#online").append(data.html)
+    else if current_user.online == false && element_user.length > 0
+      element_user.remove()
