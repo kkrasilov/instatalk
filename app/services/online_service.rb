@@ -20,7 +20,7 @@ class OnlineService
   private
 
   def broadcast_appearance
-    ActionCable.server.broadcast "appearance_channel", user: @current_user
+    ActionCable.server.broadcast "appearance_channel", user: UserSerializer.new(@current_user).as_json
   end
 
   def count_unique_connections
