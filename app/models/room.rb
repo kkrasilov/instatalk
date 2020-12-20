@@ -3,6 +3,7 @@ class Room < ApplicationRecord
 
   belongs_to :admin, class_name: 'User'
   has_many :messages, dependent: :destroy
+  has_many :room_users, dependent: :destroy
 
   def to_param
     token
