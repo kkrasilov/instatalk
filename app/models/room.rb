@@ -1,6 +1,7 @@
 class Room < ApplicationRecord
   before_create :generate_token
 
+  belongs_to :admin, class_name: 'User'
   has_many :messages, dependent: :destroy
 
   def to_param

@@ -11,7 +11,7 @@ class RoomsController < ApplicationController
   end
 
   def create
-    @room = Room.create!
+    @room = Room.create!(admin_id: current_user.id)
 
     redirect_to @room, notice: 'Room was successfully created.'
   end
