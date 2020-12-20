@@ -1,5 +1,14 @@
 <h1>Room <%= @room.id %></h1>
 
+<% if user_is_admin?(@room) %>
+  <% if @room.public %>
+    <h5><%= link_to "Public room", public_room_path(@room), method: :patch, class: 'badge badge-info' %></h5>
+  <% else %>
+    <h5><%= link_to "Private room", public_room_path(@room), method: :patch, class: 'badge badge-secondary' %></h5>
+  <% end %>
+<% end %>
+
+<span class="text-secondary">Администриатор: <strong class="text-info"><%= @room.admin.nickname %></strong></span><br>
 <%= link_to "Leave", root_path %>
 
 <p id="notice"><%= notice %></p>
